@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && mv build/index.html build/200.html && surge build show-status.surge.sh"
+    "deploy": "yarn build && mv build/index.html build/200.html && surge build"
   },
   "eslintConfig": {
     "extends": "react-app"
