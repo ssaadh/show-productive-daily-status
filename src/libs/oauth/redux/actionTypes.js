@@ -1,0 +1,5 @@
+export const OAUTH2 = 'OAUTH2';
+export const OAUTH2_PENDING = 'OAUTH2_PENDING';
+export const OAUTH2_FULFILLED = 'OAUTH2_FULFILLED';
+export const OAUTH2_REJECTED = 'OAUTH2_REJECTED';
+export const OAUTH2_LOGOUT = 'OAUTH2_LOGOUT';
