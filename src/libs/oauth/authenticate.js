@@ -3,8 +3,8 @@ import popup from './popup';
 const authenticate = ( config ) => {
   const authorizeUrl = config.api_base_url + config.oauth_path;
   /* eslint-disable no-useless-concat */
-  const query = `client_id=${ config.client_id }` + '&' + `response_type=${ config.response_type }` + '&' + `scope=${ config.scope }`;
-  const fullUrl = authorizeUrl + '?' + encodeURIComponent( query );
+  const query = `client_id=${ config.client_id }` + '&' + `response_type=${ config.response_type }` + '&' + `scope=${ encodeURIComponent( config.scope ) }` + '&' + `redirect_uri=${ config.redirect_uri }`;
+  const fullUrl = authorizeUrl + '?' + query;
 
   const openedPop = popup( fullUrl, config.identifier );
 
@@ -14,7 +14,8 @@ const authenticate = ( config ) => {
 }
 
 const splitQuery = ( str ) => {
-  return str.split( '&' ).reduce( ( result, item ) => {
+  const noHash = str[ 0 ] === '#' ? str.slice( 1 ) : str;
+  return noHash.split( '&' ).reduce( ( result, item ) => {
       var parts = item.split( '=' );
       result[ parts[ 0 ] ] = parts[ 1 ];
       return result;
@@ -27,14 +28,23 @@ const poll = ( resolve, reject, popup, identifier ) => {
     reject( 'Popup not open!' );
   }
 
-  const url = popup.location;
-  // Hash will only be in url if the authentication process has occured
-  if ( url.hash !== '' ) {
+  // Trying to get the popup location is giving errors.
+  // Setting a base var. And try for the location.hash.
+  // If it doesn't work, the if will fail without erroring and the recursion will occur as it should
+  let hashTag = '';
+  try {
+    hashTag = popup.location.hash
+  } catch ( e ) {
+    if ( process.env.NODE_ENV !== 'production' ) console.error( 'hashTag catch, error: ' + e )
+  }
+
+  // A hashtag (keke) will only be in url if the authentication process has occured
+  if ( hashTag ) {
     // Regardless of outcome, popup can be closed.
     popup.close();
 
-    const content = splitQuery( url.hash );
-
+    const content = splitQuery( hashTag );
+    
     // Having an access token is the most important part.
     if ( content.access_token && content.token_type ) {
       // For when saving to localStorage, having a name/identifier in the hash
@@ -52,7 +62,7 @@ const poll = ( resolve, reject, popup, identifier ) => {
     }
   } else {
     // recursive
-    setTimeout( () => poll( resolve, reject, popup ), 1000 );
+    setTimeout( () => poll( resolve, reject, popup, identifier ), 1000 );
   }
 }
 
