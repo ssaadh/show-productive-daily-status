@@ -24,9 +24,9 @@ if ( process.env.NODE_ENV !== 'production' ) {
 middlewares.push( oauth2Middleware );
 
 const initialState = {
-  ...combinedOauthStateHash( 'Makerlog' ), 
-  ...combinedOauthStateHash( 'Statushero' ), 
-  ...combinedOauthStateHash( 'Rescuetime' ) 
+  ...combinedOauthStateHash( 'makerlog' ), 
+  ...combinedOauthStateHash( 'statushero' ), 
+  ...combinedOauthStateHash( 'rescuetime' ) 
 };
 
 // Culmination

@@ -13,11 +13,11 @@ const oauthStateTemplate = ( identifier ) => ( {
 const oauthKeyTemplate = ( identifier ) => `oauth/${ identifier.toLowerCase() }`;
 
 const combinedOauthStateHash = ( identifier ) => ( {
-  [ oauthKeyTemplate( identifier ) ]: oauthStateTemplate( identifier )
+  [ oauthKeyTemplate( identifier ) ]: oauthStateTemplate( identifier ) 
 } );
 
 const combinedOauthReducerHash = ( identifier ) => ( {
-  [ oauthKeyTemplate( identifier ) ]: oauth2Reducer( identifier )
+  [ oauthKeyTemplate( identifier ) ]: oauth2Reducer( identifier ) 
 } );
 
 export { combinedOauthStateHash, combinedOauthReducerHash };

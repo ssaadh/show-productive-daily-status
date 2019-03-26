@@ -7,7 +7,7 @@ const AppRouter = () => (
   <BrowserRouter>
     <div>
       <Switch>
-        <Route path="/" component={ FrontPage } />
+        <Route path="/" component={ FrontPage } exact={ true } />
         <Route component={ NotFoundPage } />
       </Switch>
     </div>

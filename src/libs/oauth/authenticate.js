@@ -22,15 +22,12 @@ const splitQuery = ( str ) => {
 }
 
 const poll = ( resolve, reject, popup, identifier ) => {
-  // return new Promise( ( resolve, reject, pops ) => {
   // popup closed or messed up. Don't even go through everything if the case
   if ( !popup || popup.closed ) {
     reject( 'Popup not open!' );
   }
 
   const url = popup.location;
-  console.log( 'URL', url.href );
-  console.log( 'hash', url.hash );
   // Hash will only be in url if the authentication process has occured
   if ( url.hash !== '' ) {
     // Regardless of outcome, popup can be closed.
@@ -42,7 +39,7 @@ const poll = ( resolve, reject, popup, identifier ) => {
     if ( content.access_token && content.token_type ) {
       // For when saving to localStorage, having a name/identifier in the hash
       content.identifier = identifier;
-
+      
       // according to https://stackoverflow.com/a/22830214, expiration is seconds * 1000 in Date form
       if ( content.expires_in ) {
         content.expires_in = Number( content.expires_in );
@@ -57,7 +54,6 @@ const poll = ( resolve, reject, popup, identifier ) => {
     // recursive
     setTimeout( () => poll( resolve, reject, popup ), 1000 );
   }
-// } );
 }
 
 export default authenticate;
