@@ -3,13 +3,13 @@ import authenticate from '../authenticate';
 
 const auth = ( identifier, config ) => ( {
   type: OAUTH2, 
-  identifier, 
+  meta: { payloadId: identifier }, 
   payload: authenticate( config ) 
 } );
 
 const logout = ( identifier ) => ( {
   type: OAUTH2_LOGOUT, 
-  identifier 
+  meta: { payloadId: identifier } 
 } );
 
 export { auth, logout };

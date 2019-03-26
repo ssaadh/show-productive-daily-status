@@ -6,13 +6,14 @@ import {
 } from './actionTypes';
 
 const oauth2Middleware = store => next => action => {
+  const { payloadId } = action.meta;
   switch ( action.type ) {
   case OAUTH2_FULFILLED:
-    localAuth.saveAll( action.identifier, action.payload );
+    localAuth.saveAll( payloadId, action.payload );
     break;
   case OAUTH2_REJECTED:
   case OAUTH2_LOGOUT:
-    localAuth.removeAll( action.identifier );
+    localAuth.removeAll( payloadId );
     break;
   default:
     break;

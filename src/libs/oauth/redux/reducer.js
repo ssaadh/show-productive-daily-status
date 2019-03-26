@@ -15,8 +15,9 @@ const initialStateSchema = {
 
 const oauth2Reducer = ( identifier = '' ) => {
   return ( state = initialStateSchema, action ) => {
-    if ( action.identifier !== identifier ) return state;
-
+    const { payloadId } = action.hasOwnProperty( 'meta' ) ? action.meta : { payloadId: null };
+    if ( payloadId !== identifier ) return state;
+    
     switch ( action.type ) {
       case OAUTH2_PENDING:
         return { ...state, 
