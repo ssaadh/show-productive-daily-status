@@ -6,10 +6,10 @@ const authenticate = ( config ) => {
   const query = `client_id=${ config.client_id }` + '&' + `response_type=${ config.response_type }` + '&' + `scope=${ config.scope }`;
   const fullUrl = authorizeUrl + '?' + encodeURIComponent( query );
 
-  const openedPop = popup( fullUrl, config.name );
+  const openedPop = popup( fullUrl, config.identifier );
 
   return new Promise( ( resolve, reject ) => 
-    poll( resolve, reject, openedPop, config.name )
+    poll( resolve, reject, openedPop, config.identifier )
   );
 }
 
