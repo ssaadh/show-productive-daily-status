@@ -1,8 +1,10 @@
 import React from 'react';
 
+import Makerlog from './Makerlog';
+
 const FrontPage = () => (
   <div>
-    Okay
+    <Makerlog />
   </div>
 );
 
