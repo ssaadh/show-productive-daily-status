@@ -1,10 +1,12 @@
 import React from 'react';
 
-import Makerlog from './Makerlog';
+import Auth from './Makerlog';
+// Lib imports
+import makerConfig from '../config/makerlog';
 
 const FrontPage = () => (
   <div>
-    <Makerlog />
+    <Auth name='makerlog' config={ makerConfig } />
   </div>
 );
 

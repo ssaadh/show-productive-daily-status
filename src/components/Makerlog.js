@@ -1,12 +1,9 @@
 // Package imports
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Button from 'react-bootstrap/Button';
-
-// Lib imports
-import serviceConfig from '../config/makerlog';
 
 // Lib imports
 import {
@@ -21,36 +18,36 @@ class Makerlog extends React.Component {
     this.handleClick = this.handleClick.bind( this );
     this.handleLogout = this.handleLogout.bind( this );
   }
-  name = 'makerlog';
-  config = serviceConfig;
+
+  capitalize( str ) {
+    return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
+  }
 
   handleClick() {
-    this.props.actions.auth( this.name, this.config );
+    this.props.auth( this.props.name, this.props.config );
   }
 
   handleLogout() {
-    this.props.actions.logout( this.name );
+    this.props.logout( this.props.name );
   }
 
   render() {
-    console.log( this.props );
-    const isLoading = this.props.makerlog.loggingIn;
-    const loggedIn = this.props.makerlog.loggedIn;
+    const { loggingIn, loggedIn } = this.props.api;
     return(
     <div>
-      { !this.props.makerlog.LoggedIn && 
+      { !loggedIn && 
       <Button 
-        disabled={ isLoading } 
-        onClick={ !isLoading ? this.handleClick : null }
+        disabled={ loggingIn } 
+        onClick={ !loggingIn ? this.handleClick : null }
       >
-        { !isLoading ? `Authenticate with ${ this.name }` : 'Logging in...' }
+        { !loggingIn ? `Authenticate with ${ this.capitalize( this.props.name ) }` : 'Logging in...' }
       </Button> }
-      { this.props.makerlog.LoggedIn && 
+      { loggedIn && 
       <Button 
         disabled={ !loggedIn }
         onClick={ loggedIn ? this.handleLogout : null }
       >
-        { loggedIn ? `Disconnect us from ${ this.name }` : 'Logging out...' }
+        { `Disconnect from ${ this.capitalize( this.props.name ) }` }
       </Button> }
     </div>
     );
@@ -58,19 +55,29 @@ class Makerlog extends React.Component {
 }
 
 Makerlog.propTypes = {
-  makerlog: PropTypes.object.isRequired, 
-  actions: PropTypes.object.isRequired 
+  name: PropTypes.string.isRequired, 
+  api: PropTypes.object.isRequired, 
+  config: PropTypes.object.isRequired, 
+  auth: PropTypes.func.isRequired, 
+  logout: PropTypes.func.isRequired 
 };
 
 function mapStateToProps( state, ownProps ) {
   return {
-    makerlog: state[ 'oauth/makerlog' ] 
+    name: ownProps.name, 
+    api: state[ `oauth/${ ownProps.name }` ], 
+    config: ownProps.config 
   };
 }
 
 function mapDispatchToProps( dispatch ) {
   return {
-    actions: bindActionCreators( { auth, logout }, dispatch )
+      auth( id, config ) {
+        dispatch( auth( id, config ) )
+      }, 
+      logout() {
+        dispatch( logout )
+      }
   };
 }
 
