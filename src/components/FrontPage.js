@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Auth from './Makerlog';
+import Auth from './Auth';
 // Lib imports
 import makerConfig from '../config/makerlog';
 

@@ -11,7 +11,7 @@ import {
   logout 
 } from '../libs/oauth';
 
-class Makerlog extends React.Component {
+class Auth extends React.Component {
   constructor( props ) {
     super( props );
 
@@ -54,7 +54,7 @@ class Makerlog extends React.Component {
   }
 }
 
-Makerlog.propTypes = {
+Auth.propTypes = {
   name: PropTypes.string.isRequired, 
   api: PropTypes.object.isRequired, 
   config: PropTypes.object.isRequired, 
@@ -81,4 +81,4 @@ function mapDispatchToProps( dispatch ) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( Makerlog );
+export default connect( mapStateToProps, mapDispatchToProps )( Auth );
