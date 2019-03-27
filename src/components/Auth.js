@@ -1,7 +1,6 @@
 // Package imports
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 
@@ -72,12 +71,10 @@ function mapStateToProps( state, ownProps ) {
 
 function mapDispatchToProps( dispatch ) {
   return {
-      auth( id, config ) {
-        dispatch( auth( id, config ) )
-      }, 
-      logout() {
-        dispatch( logout )
-      }
+    auth( id, config ) {
+      dispatch( auth( id, config ) )
+    }, 
+    logout: ( id ) => dispatch( logout( id ) ), 
   };
 }
 
