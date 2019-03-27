@@ -6,7 +6,7 @@ import {
 } from './actionTypes';
 
 const oauth2Middleware = store => next => action => {
-  const { payloadId } = action.meta;
+  const { payloadId } = action.hasOwnProperty( 'meta' ) ? action.meta : { payloadId: null };
   switch ( action.type ) {
   case OAUTH2_FULFILLED:
     localAuth.saveAll( payloadId, action.payload );

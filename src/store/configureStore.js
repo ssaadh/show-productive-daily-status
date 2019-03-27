@@ -26,7 +26,7 @@ middlewares.push( oauth2Middleware );
 const initialState = {
   ...combinedOauthStateHash( 'makerlog' ), 
   ...combinedOauthStateHash( 'statushero' ), 
-  ...combinedOauthStateHash( 'rescuetime' ) 
+  // ...combinedOauthStateHash( 'rescuetime' ) 
 };
 
 // Culmination

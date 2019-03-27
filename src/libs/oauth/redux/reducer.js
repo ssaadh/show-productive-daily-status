@@ -48,7 +48,7 @@ const oauth2Reducer = ( identifier = '' ) => {
           error: null 
         };
       default:
-        return state
+        return state;
     }
   }
 }
