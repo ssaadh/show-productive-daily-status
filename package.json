@@ -7,6 +7,7 @@
   "dependencies": {
     "@sentry/browser": "4.6.4",
     "axios": "^0.18.0",
+    "formik": "^1.5.1",
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-bootstrap": "^1.0.0-beta.5",
@@ -17,14 +18,15 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && mv build/index.html build/200.html && surge build https://showstatus.surge.sh"
+    "surge": "yarn build && mv build/index.html build/200.html && surge build https://showstatus.surge.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
