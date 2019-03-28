@@ -10,7 +10,7 @@ const post = ( token, data ) => {
   postData.done = data.theStatus === 'done' ? true : false;
   postData.in_progress = data.theStatus === 'doing' ? true : false;
 
-  const headerHash = { header: `Authorization: Bearer ${ token }` };
+  const headerHash = { Authorization: 'Bearer 5RNSDDQqV77t0NqJzfm7JFiHzAU992' };
   Axios.post(
     'https://api.getmakerlog.com/tasks/', 
     data, 
