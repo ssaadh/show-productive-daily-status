@@ -15,7 +15,7 @@ const initialStateSchema = {
 
 const oauth2Reducer = ( identifier = '' ) => {
   return ( state = initialStateSchema, action ) => {
-    const { payloadId } = action.hasOwnProperty( 'meta' ) ? action.meta : { payloadId: null };
+    const { payloadId, type } = action.hasOwnProperty( 'meta' ) ? action.meta : { payloadId: null };
     if ( payloadId !== identifier ) return state;
     
     switch ( action.type ) {
@@ -24,6 +24,9 @@ const oauth2Reducer = ( identifier = '' ) => {
           loggingIn: true
         };
       case OAUTH2_FULFILLED:
+        if ( action.type === OAUTH2_FULFILLED && type === 'code' ) {
+          return state;
+        }
         return { ...state, 
           loggingIn: false, 
           loggedIn: true, 

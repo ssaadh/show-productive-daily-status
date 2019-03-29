@@ -3,7 +3,7 @@ import authenticate from '../authenticate';
 
 const auth = ( identifier, config ) => ( {
   type: OAUTH2, 
-  meta: { payloadId: identifier }, 
+  meta: { payloadId: identifier, type: config.response_type, config }, 
   payload: authenticate( config ) 
 } );
 
