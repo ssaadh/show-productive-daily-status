@@ -1,5 +1,5 @@
-import { OAUTH2, OAUTH2_LOGOUT } from './actionTypes';
-import authenticate from '../authenticate';
+import { OAUTH2, OAUTH2_CODE_TOKEN, OAUTH2_LOGOUT } from './actionTypes';
+import authenticate, { getCodeToken } from '../authenticate';
 
 const auth = ( identifier, config ) => ( {
   type: OAUTH2, 
@@ -12,4 +12,10 @@ const logout = ( identifier ) => ( {
   meta: { payloadId: identifier } 
 } );
 
-export { auth, logout };
+const authCodeStep2 = ( identifier, config, code ) => ( { 
+  type: OAUTH2_CODE_TOKEN, 
+  meta: { payloadId: identifier, config }, 
+  payload: getCodeToken( config, code ) 
+} );
+
+export { auth, authCodeStep2, logout };

@@ -117,4 +117,21 @@ const splitCodeAuthQuery = ( str ) => {
   }, {} );
 }
 
+// Next step for code to get access token
+
+export const getCodeToken = ( config, code ) => {
+  const url = makeAuthorizationCodeUrl( config, code );
+  return Axios.post( url )
+}
+
+const makeAuthorizationCodeUrl = ( config, code ) => {
+  const authorizeUrl = config.api_base_url + config.authorization_path;
+
+  const ending = config.end_of_auth ? config.end_of_auth : '';
+  /* eslint-disable no-useless-concat */
+  const query = `code=${ code }&` + 'grant_type=authorization_code' + `client_id=${ config.client_id }&` + `client_secret=${ config.client_secret }&` + `redirect_uri=${ config.redirect_uri }` + ending;
+
+  return authorizeUrl + '?' + query;
+}
+
 export default authenticate;
