@@ -5,9 +5,15 @@ const authenticate = ( config ) => {
   const fullUrl = makeAuthUrl( config );
   const openedPop = popup( fullUrl, identifier );
 
-  return new Promise( ( resolve, reject ) => 
-    poll( resolve, reject, openedPop, config.identifier )
-  );
+  if ( response_type === 'token' ) {
+    return new Promise( ( resolve, reject ) => 
+      pollToken( resolve, reject, openedPop, identifier )
+    );
+  } else if ( response_type === 'code' ) {
+    return new Promise( ( resolve, reject ) => 
+      pollCode( resolve, reject, openedPop, identifier )
+    );
+  }
 }
 
 const makeAuthUrl = ( config ) => {
@@ -21,7 +27,7 @@ const makeAuthUrl = ( config ) => {
   return authorizeUrl + '?' + query;
 }
 
-const poll = ( resolve, reject, popup, identifier ) => {
+const pollToken = ( resolve, reject, popup, identifier ) => {
   // popup closed or messed up. Don't even go through everything if the case
   if ( !popup || popup.closed ) {
     reject( 'Popup not open!' );
@@ -61,13 +67,50 @@ const poll = ( resolve, reject, popup, identifier ) => {
     }
   } else {
     // recursive
-    setTimeout( () => poll( resolve, reject, popup, identifier ), 1000 );
+    setTimeout( () => pollToken( resolve, reject, popup, identifier ), 1000 );
+  }
+}
+
+const pollCode = ( resolve, reject, popup, identifier ) => {
+  if ( !popup || popup.closed ) {
+    reject( 'Popup not open!' );
+  }
+
+  let result = '';
+  try {
+    result = popup.location.search;    
+  } catch ( e ) {
+    if ( process.env.NODE_ENV !== 'production' ) console.error( 'hashTag catch, error: ' + e )
+  }
+
+  if ( result && result.match( /code=/ ) ) {
+    popup.close();
+
+    const content = splitCodeAuthQuery( result );
+    if ( content.code ) {
+      // For when saving to localStorage, having a name/identifier in the hash
+      content.identifier = identifier;
+      resolve( content );
+    } else {
+      reject( `Error: ${ content.error }` );
+    }
+  } else {
+    setTimeout( () => pollCode( resolve, reject, popup, identifier ), 1000 );
   }
 }
 
 const splitQuery = ( str ) => {
   const noHash = str[ 0 ] === '#' ? str.slice( 1 ) : str;
   return noHash.split( '&' ).reduce( ( result, item ) => {
+      var parts = item.split( '=' );
+      result[ parts[ 0 ] ] = parts[ 1 ];
+      return result;
+  }, {} );
+}
+
+const splitCodeAuthQuery = ( str ) => {
+  const noQ = str[ 0 ] === '?' ? str.slice( 1 ) : str;
+  return noQ.split( '?' ).reduce( ( result, item ) => {
       var parts = item.split( '=' );
       result[ parts[ 0 ] ] = parts[ 1 ];
       return result;
