@@ -1,3 +1,5 @@
+import Axios from 'axios';
+
 import popup from './popup';
 
 const authenticate = ( config ) => {
