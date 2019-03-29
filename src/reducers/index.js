@@ -5,9 +5,8 @@ import makerlogSubmit from './makerlogSubmit';
 
 const rootReducer = combineReducers( {
   ...combinedOauthReducerHash( 'makerlog' ), 
-  ...combinedOauthReducerHash( 'statushero' ), 
+  ...combinedOauthReducerHash( 'complice' ), 
   makerlogSubmit 
-  // ...combinedOauthReducerHash( 'rescuetime' ) 
 } );
 
 export default rootReducer;
