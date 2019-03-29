@@ -1,25 +1,24 @@
 import popup from './popup';
 
 const authenticate = ( config ) => {
-  const authorizeUrl = config.api_base_url + config.oauth_path;
-  /* eslint-disable no-useless-concat */
-  const query = `client_id=${ config.client_id }` + '&' + `response_type=${ config.response_type }` + '&' + `scope=${ encodeURIComponent( config.scope ) }` + '&' + `redirect_uri=${ config.redirect_uri }`;
-  const fullUrl = authorizeUrl + '?' + query;
-
-  const openedPop = popup( fullUrl, config.identifier );
+  const { identifier, response_type } = config;
+  const fullUrl = makeAuthUrl( config );
+  const openedPop = popup( fullUrl, identifier );
 
   return new Promise( ( resolve, reject ) => 
     poll( resolve, reject, openedPop, config.identifier )
   );
 }
 
-const splitQuery = ( str ) => {
-  const noHash = str[ 0 ] === '#' ? str.slice( 1 ) : str;
-  return noHash.split( '&' ).reduce( ( result, item ) => {
-      var parts = item.split( '=' );
-      result[ parts[ 0 ] ] = parts[ 1 ];
-      return result;
-  }, {} );
+const makeAuthUrl = ( config ) => {
+  const authorizeUrl = config.api_base_url + config.oauth_path;
+  const scope = config.scope ? `scope=${ encodeURIComponent( config.scope ) }&` : '';
+  const secret = config.client_secret ? `client_secret=${ config.client_secret }&` : '';
+  const ending = config.end_of_auth ? config.end_of_auth : '';
+  /* eslint-disable no-useless-concat */
+  const query = `client_id=${ config.client_id }&` + secret + `response_type=${ config.response_type }&` + scope + `redirect_uri=${ config.redirect_uri }` + ending;
+
+  return authorizeUrl + '?' + query;
 }
 
 const poll = ( resolve, reject, popup, identifier ) => {
@@ -33,7 +32,7 @@ const poll = ( resolve, reject, popup, identifier ) => {
   // If it doesn't work, the if will fail without erroring and the recursion will occur as it should
   let hashTag = '';
   try {
-    hashTag = popup.location.hash
+    hashTag = popup.location.hash;
   } catch ( e ) {
     if ( process.env.NODE_ENV !== 'production' ) console.error( 'hashTag catch, error: ' + e )
   }
@@ -64,6 +63,15 @@ const poll = ( resolve, reject, popup, identifier ) => {
     // recursive
     setTimeout( () => poll( resolve, reject, popup, identifier ), 1000 );
   }
+}
+
+const splitQuery = ( str ) => {
+  const noHash = str[ 0 ] === '#' ? str.slice( 1 ) : str;
+  return noHash.split( '&' ).reduce( ( result, item ) => {
+      var parts = item.split( '=' );
+      result[ parts[ 0 ] ] = parts[ 1 ];
+      return result;
+  }, {} );
 }
 
 export default authenticate;
