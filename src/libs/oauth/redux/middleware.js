@@ -13,19 +13,17 @@ import { authCodeStep2 } from './actions';
 
 const oauth2Middleware = store => next => action => {
   const { payloadId, type } = action.hasOwnProperty( 'meta' ) ? action.meta : { payloadId: null };
-  switch ( action.type ) {
   case OAUTH2_FULFILLED:
-    if ( type === 'code' ) {
-      if ( action.meta.hasOwnProperty( 'config' ) && action.payload.code ) {
-        store.dispatch( authCodeStep2( action.meta.identifer, action.meta.config, action.payload.code ) );        
+  switch ( action.type ) {    
+  case OAUTH2_CODE_TOKEN_FULFILLED:
+    if (action.type === OAUTH2_FULFILLED && type === 'code' ) {
+      if ( action.meta.hasOwnProperty( 'config' ) && action.payload.data.code ) {
+        store.dispatch( authCodeStep2( payloadId, action.meta.config, action.payload.data.code ) );        
       }
       break;
     }
 
-    localAuth.saveAll( payloadId, action.payload );
-    break;
-  case OAUTH2_CODE_TOKEN_FULFILLED:
-    localAuth.saveAll( payloadId, action.payload );
+    localAuth.saveAll( payloadId, action.payload.data );
     break;
   case OAUTH2_CODE_TOKEN_REJECTED:
   case OAUTH2_REJECTED:

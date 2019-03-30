@@ -38,8 +38,8 @@ const oauth2Reducer = ( identifier = '' ) => {
         return { ...state, 
           loggingIn: false, 
           loggedIn: true, 
-          token: action.payload.token, 
-          type: action.payload.token_type, 
+          token: action.payload.data.access_token, 
+          type: action.payload.data.token_type, 
           error: null 
         };
       case OAUTH2_CODE_TOKEN_REJECTED:

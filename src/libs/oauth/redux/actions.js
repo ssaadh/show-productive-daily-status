@@ -14,7 +14,7 @@ const logout = ( identifier ) => ( {
 
 const authCodeStep2 = ( identifier, config, code ) => ( { 
   type: OAUTH2_CODE_TOKEN, 
-  meta: { payloadId: identifier, config }, 
+  meta: { payloadId: identifier, config, code }, 
   payload: getCodeToken( config, code ) 
 } );
 

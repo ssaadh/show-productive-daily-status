@@ -62,7 +62,7 @@ const pollToken = ( resolve, reject, popup, identifier ) => {
         content.expires_at = Date.now() + ( content.expires_in * 1000 );
       }
 
-      resolve( content );
+      resolve( { data: content } );
     } else {
       reject( `Error: ${ content.error }` );
     }
@@ -91,7 +91,7 @@ const pollCode = ( resolve, reject, popup, identifier ) => {
     if ( content.code ) {
       // For when saving to localStorage, having a name/identifier in the hash
       content.identifier = identifier;
-      resolve( content );
+      resolve( { data: content } );
     } else {
       reject( `Error: ${ content.error }` );
     }
@@ -123,7 +123,7 @@ const splitCodeAuthQuery = ( str ) => {
 
 export const getCodeToken = ( config, code ) => {
   const url = makeAuthorizationCodeUrl( config, code );
-  return Axios.post( url )
+  return Axios.post( config.backend_url, { url } );
 }
 
 const makeAuthorizationCodeUrl = ( config, code ) => {
