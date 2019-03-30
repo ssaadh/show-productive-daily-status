@@ -1,7 +1,7 @@
 import {
-  OAUTH2_PENDING, 
-  OAUTH2_FULFILLED, 
-  OAUTH2_REJECTED, 
+  OAUTH2_IMPLICIT_PENDING, 
+  OAUTH2_IMPLICIT_FULFILLED, 
+  OAUTH2_IMPLICIT_REJECTED, 
 
   OAUTH2_CODE_TOKEN_PENDING, 
   OAUTH2_CODE_TOKEN_FULFILLED, 
@@ -25,14 +25,14 @@ const oauth2Reducer = ( identifier = '' ) => {
     if ( payloadId !== identifier ) return state;
     
     switch ( action.type ) {
+      case OAUTH2_IMPLICIT_PENDING:
       case OAUTH2_CODE_TOKEN_PENDING:
-      case OAUTH2_PENDING:
         return { ...state, 
           loggingIn: true
         };
+      case OAUTH2_IMPLICIT_FULFILLED:
       case OAUTH2_CODE_TOKEN_FULFILLED:
-      case OAUTH2_FULFILLED:
-        if ( action.type === OAUTH2_FULFILLED && type === 'code' ) {
+        if ( action.type === OAUTH2_IMPLICIT_FULFILLED && type === 'code' ) {
           return state;
         }
         return { ...state, 
@@ -42,8 +42,8 @@ const oauth2Reducer = ( identifier = '' ) => {
           type: action.payload.data.token_type, 
           error: null 
         };
+      case OAUTH2_IMPLICIT_REJECTED:
       case OAUTH2_CODE_TOKEN_REJECTED:
-      case OAUTH2_REJECTED:
         return { ...state, 
           loggingIn: false,
           loggedIn: false,

@@ -1,8 +1,8 @@
-import { OAUTH2, OAUTH2_CODE_TOKEN, OAUTH2_LOGOUT } from './actionTypes';
+import { OAUTH2_IMPLICIT, OAUTH2_CODE_TOKEN, OAUTH2_LOGOUT } from './actionTypes';
 import authenticate, { getCodeToken } from '../authenticate';
 
 const auth = ( identifier, config ) => ( {
-  type: OAUTH2, 
+  type: OAUTH2_IMPLICIT, 
   meta: { payloadId: identifier, type: config.response_type, config }, 
   payload: authenticate( config ) 
 } );
