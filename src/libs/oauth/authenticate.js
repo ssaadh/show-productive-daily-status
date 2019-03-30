@@ -60,7 +60,7 @@ const pollToken = ( resolve, reject, popup, identifier ) => {
       if ( content.expires_in ) {
         content.expires_in = Number( content.expires_in );
         content.expires_at = Date.now() + ( content.expires_in * 1000 );
-      };
+      }
 
       resolve( content );
     } else {
@@ -83,11 +83,11 @@ const pollCode = ( resolve, reject, popup, identifier ) => {
   } catch ( e ) {
     if ( process.env.NODE_ENV !== 'production' ) console.error( 'hashTag catch, error: ' + e )
   }
-
+  
   if ( result && result.match( /code=/ ) ) {
     popup.close();
 
-    const content = splitCodeAuthQuery( result );
+    const content = splitCodeAuthQuery( result );  
     if ( content.code ) {
       // For when saving to localStorage, having a name/identifier in the hash
       content.identifier = identifier;
@@ -118,7 +118,8 @@ const splitCodeAuthQuery = ( str ) => {
   }, {} );
 }
 
-// Next step for code to get access token
+
+// Next step[s] for code to get access token
 
 export const getCodeToken = ( config, code ) => {
   const url = makeAuthorizationCodeUrl( config, code );
@@ -128,7 +129,6 @@ export const getCodeToken = ( config, code ) => {
 const makeAuthorizationCodeUrl = ( config, code ) => {
   const authorizeUrl = config.api_base_url + config.authorization_path;
   /* eslint-disable no-useless-concat */
-
   const query = `code=${ code }&` + 'grant_type=authorization_code&' + `client_id=${ config.client_id }&` + `client_secret=${ config.client_secret }&` + `redirect_uri=${ config.redirect_uri }`;
   return authorizeUrl + '?' + query;
 }

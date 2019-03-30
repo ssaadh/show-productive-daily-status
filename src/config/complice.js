@@ -6,11 +6,9 @@ const config = {
   client_secret: '0LZAXeJ5XUbsdASoa4NalY0USvyUaAma7ZM5ND6I1mBh8e9zPt3CFBIAJrxnJ6X8CtesO4haPzoh1VfZds35wiBJAqFYwGZR38eIZlOEpnTtXYWoCrMeWobBHD5rszAP', 
   response_type: 'code', 
   scope: '', 
-  end_of_auth: '?first-auth=true', 
-  redirect_uri: window.location.origin + '/', 
+  redirect_uri: window.location.origin + '/?first-auth=true', 
   // popupWidth: 500, 
   // popupHeight: 500, 
-
   identifier: 'complice' 
 }
 
