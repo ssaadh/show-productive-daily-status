@@ -4,7 +4,11 @@ class localAuth {
   }
   static saveAll( identifier, info ) {
     if ( identifier ) {
-      const key = localAuth.key( identifier ) 
+      const key = localAuth.key( identifier );
+      // Awful
+      if ( !info.expires_at ) {
+        info.expires_at = Date.now() + 50000000;
+      }
       localStorage.setItem( key, JSON.stringify( info ) );
       return true;
     } else {
