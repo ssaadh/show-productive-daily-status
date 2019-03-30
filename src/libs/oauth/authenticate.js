@@ -22,9 +22,8 @@ const makeAuthUrl = ( config ) => {
   const authorizeUrl = config.api_base_url + config.oauth_path;
   const scope = config.scope ? `scope=${ encodeURIComponent( config.scope ) }&` : '';
   const secret = config.client_secret ? `client_secret=${ config.client_secret }&` : '';
-  const ending = config.end_of_auth ? config.end_of_auth : '';
   /* eslint-disable no-useless-concat */
-  const query = `client_id=${ config.client_id }&` + secret + `response_type=${ config.response_type }&` + scope + `redirect_uri=${ config.redirect_uri }` + ending;
+  const query = `client_id=${ config.client_id }&` + secret + `response_type=${ config.response_type }&` + scope + `redirect_uri=${ config.redirect_uri }`;
 
   return authorizeUrl + '?' + query;
 }
@@ -112,7 +111,7 @@ const splitQuery = ( str ) => {
 
 const splitCodeAuthQuery = ( str ) => {
   const noQ = str[ 0 ] === '?' ? str.slice( 1 ) : str;
-  return noQ.split( '?' ).reduce( ( result, item ) => {
+  return noQ.split( '&' ).reduce( ( result, item ) => {
       var parts = item.split( '=' );
       result[ parts[ 0 ] ] = parts[ 1 ];
       return result;
@@ -128,11 +127,9 @@ export const getCodeToken = ( config, code ) => {
 
 const makeAuthorizationCodeUrl = ( config, code ) => {
   const authorizeUrl = config.api_base_url + config.authorization_path;
-
-  const ending = config.end_of_auth ? config.end_of_auth : '';
   /* eslint-disable no-useless-concat */
-  const query = `code=${ code }&` + 'grant_type=authorization_code' + `client_id=${ config.client_id }&` + `client_secret=${ config.client_secret }&` + `redirect_uri=${ config.redirect_uri }` + ending;
 
+  const query = `code=${ code }&` + 'grant_type=authorization_code&' + `client_id=${ config.client_id }&` + `client_secret=${ config.client_secret }&` + `redirect_uri=${ config.redirect_uri }`;
   return authorizeUrl + '?' + query;
 }
 
